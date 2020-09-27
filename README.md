@@ -4,14 +4,19 @@
 
 Be sure to disable the web process that heroku creates by default
 
-Note: Be sure to create your own src/secrets.js for credential management.
+Note: Set the 3 env variables required in app.js
 
 
-## To deploy to heroku
+## Steps to deploy to heroku
 
     heroku login
     heroku create
     git push heroku master
+    heroku ps:scale worker=1
+
+### To verify if instance is running
+    heroku ps
+
 
 ### To check heroku logs
     heroku logs --tail

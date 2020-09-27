@@ -6,9 +6,6 @@ const BOT_TEST_CHANNEL = process.env.BOT_TEST_CHANNEL;
 const CODE_CHANNEL = process.env.CODE_CHANNEL;
 const SLACK_OAUTH_TOKEN = process.env.SLACK_OAUTH_TOKEN;
 
-console.log(SLACK_OAUTH_TOKEN);
-console.log(BOT_TEST_CHANNEL);
-
 const rtm = new RTMClient(SLACK_OAUTH_TOKEN);
 const web = new WebClient(SLACK_OAUTH_TOKEN);
 
