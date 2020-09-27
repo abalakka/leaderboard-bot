@@ -1,12 +1,17 @@
 import { RTMClient } from '@slack/rtm-api';
-import { SLACK_OAUTH_TOKEN } from './secrets';
 import { WebClient } from '@slack/web-api';
-import { BOT_TEST_CHANNEL } from "./secrets";
-import { CODE_CHANNEL } from "./secrets";
 import { getLeaderboard } from "./leaderboard";
+
+const BOT_TEST_CHANNEL = process.env.BOT_TEST_CHANNEL;
+const CODE_CHANNEL = process.env.CODE_CHANNEL;
+const SLACK_OAUTH_TOKEN = process.env.SLACK_OAUTH_TOKEN;
+
+console.log(SLACK_OAUTH_TOKEN);
+console.log(BOT_TEST_CHANNEL);
 
 const rtm = new RTMClient(SLACK_OAUTH_TOKEN);
 const web = new WebClient(SLACK_OAUTH_TOKEN);
+
 
 rtm.start()
     .catch(console.error);
@@ -17,7 +22,7 @@ rtm.on('ready', async () => {
 });
 
 
-rtm.on('slack_event', async (eventType, event) => {
+rtm.on('slack_event', async (eventType, event) => {    
     if(event && event.type === 'message'){
         if(event.text === '!hello') {
             respond(BOT_TEST_CHANNEL, `Hello  <@${event.user}>`);
