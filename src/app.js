@@ -1,6 +1,7 @@
 import { RTMClient } from '@slack/rtm-api';
 import { WebClient } from '@slack/web-api';
 import { getLeaderboard } from "./leaderboard";
+const packageJson = require('../package.json');
 
 const BOT_TEST_CHANNEL = process.env.BOT_TEST_CHANNEL;
 const CODE_CHANNEL = process.env.CODE_CHANNEL;
@@ -14,8 +15,7 @@ rtm.start()
     .catch(console.error);
 
 rtm.on('ready', async () => {
-    console.log("Bot started");
-    sendMessage(BOT_TEST_CHANNEL, 'Bot online');
+    console.log(`Bot version ${packageJson.version} is online.`);
 });
 
 
@@ -35,10 +35,10 @@ rtm.on('slack_event', async (eventType, event) => {
 });
 
 async function postLeaderboard() {
-    let msg = 'Todays leaderboard:\nRank\t\tName\n';
+    let msg = 'Current leaderboard:\nRank\t\tName\t\tScore\n';
     getLeaderboard().then(resp => {
         resp.forEach(user => {
-            msg += user.rank + '\t\t' + user.name + '\n';
+            msg += user.rank + '\t\t' + user.name + '\t\t' + user.score + '\n';
         });
         respond(CODE_CHANNEL, msg);
     }).catch(error => {
