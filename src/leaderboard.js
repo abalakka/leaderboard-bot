@@ -3,7 +3,7 @@ const https = require('https');
 const options = {
     hostname: 'www.hackerrank.com',
     headers: {'Content-Type': 'application/json', 'User-Agent' : 'PostmanRuntime/7.26.2'},
-    path: '/rest/contests/wissen-coding-challenge-2021/leaderboard?offset=0&limit=10',
+    path: '/rest/contests/wissen-coding-challenge-2021/leaderboard?offset=0&limit=20',
     method: 'GET'
   }
 
