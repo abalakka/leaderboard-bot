@@ -26,10 +26,16 @@ rtm.on('slack_event', async (eventType, event) => {
         } 
         else if(event.text === '!ranks') {
             respond(BOT_TEST_CHANNEL, `Leaderboard requested by  <@${event.user}>`);
-            postLeaderboard();
+            let leaderboard = await postLeaderboard();
+            respond(BOT_TEST_CHANNEL, leaderboard);
         }
         else if(event.text === '!announceQs') {
             respond(CODE_CHANNEL, 'New questions have just been added to the challenge! Happy solving :)');
+        }
+        else if(event.text === '!rules') {
+            respond(BOT_TEST_CHANNEL, 'Rules: \n1.To win you must solve all the questions in the challenge.' + 
+                                         '[You can only claim the prize after the questions for the final week have been published]\n' +
+                                            '2.Minimum of 8 questions will be given every Sunday afternoon.\n3.No eliminations'); 
         }
     }
 });
@@ -40,10 +46,11 @@ async function postLeaderboard() {
         resp.forEach(user => {
             msg += user.rank + '\t\t' + user.name + '\t\t' + user.score + '\n';
         });
-        respond(CODE_CHANNEL, msg);
+        // respond(CODE_CHANNEL, msg);
     }).catch(error => {
         console.log(error);
     });
+    return msg;
 }
 
 async function respond(channel, text) {
