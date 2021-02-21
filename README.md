@@ -4,7 +4,17 @@
 
 Be sure to disable the web process that heroku creates by default
 
-Note: Set the 3 env variables required in app.js
+## Prerequisites
+
+    NPM, Node, Yarn and Heroku CLI
+
+
+## To run locally
+
+    i. Set all the required env variables
+    ii. npm i
+    iii. yarn start
+
 
 
 ## Steps to deploy to heroku
@@ -12,6 +22,7 @@ Note: Set the 3 env variables required in app.js
     heroku login
     heroku create
     git push heroku master
+    Set the required env variables in Heroku.
     heroku ps:scale worker=1
 
 ### To verify if instance is running
