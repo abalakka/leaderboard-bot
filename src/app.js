@@ -2,6 +2,8 @@ import { RTMClient } from '@slack/rtm-api';
 import { WebClient } from '@slack/web-api';
 import { getLeaderboard } from "./webUtil";
 import { getCoursePrices } from "./webUtil";
+import { sendMail } from "./webUtil";
+
 const packageJson = require('../package.json');
 
 const BOT_TEST_CHANNEL = process.env.BOT_TEST_CHANNEL;
@@ -27,6 +29,7 @@ rtm.on('slack_event', async (eventType, event) => {
             respond(BOT_TEST_CHANNEL, `Leaderboard requested by  <@${event.user}>`);
             const leaderboard = await currentLeaderboard();
             respond(CODE_CHANNEL, leaderboard);
+            await sendMail();
         } else if(event.text === '!announceQs') {
             respond(BOT_TEST_CHANNEL, `Questions announced by  <@${event.user}>`);
             respond(CODE_CHANNEL, 'New questions have just been added to the challenge! Happy solving :)');

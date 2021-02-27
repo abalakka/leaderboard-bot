@@ -1,4 +1,5 @@
 const https = require('https');
+const nodemailer = require('nodemailer');
 
 const codeChallengeOptions = {
     hostname: process.env.CODE,
@@ -10,7 +11,7 @@ const codeChallengeOptions = {
 
 const coursePricesOptions = {
     hostname: process.env.COURSE,
-    headers: {'Content-Type': 'application/json', 'User-Agent' : 'PostmanRuntime/7.26.2', 'Cookie': process.env.COOKIE}, //
+    headers: {'Content-Type': 'application/json', 'User-Agent' : 'PostmanRuntime/7.26.2','Cookie': process.env.COOKIE }, // 
     path: '/api-2.0/pricing/?course_ids=1692036,756150&fields[pricing_result]=price,discount_price',
     method: 'GET'
 }
@@ -76,4 +77,36 @@ function getDiscountedPrice(discountedPrice) {
         return discountedPrice.amount;
 }
 
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.MAIL_FROM,
+      pass: process.env.MAIL_SECRET
+    }
+  });
 
+const mailOptions = {
+    from: process.env.MAIL_FROM,
+    to: process.env.MAIL_TO,
+    text: 'Auto generated email'
+  };
+
+export async function sendMail() {
+    const prices = await getCoursePrices();
+    let isDiscounted = false;
+    prices.forEach(course => {
+        if(course.discountedPrice != '-1')
+            isDiscounted = true;
+    })
+    
+    mailOptions.subject = isDiscounted ? "Possible discount detected on courses" : "No discount detected on courses";
+    
+    
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
+}
